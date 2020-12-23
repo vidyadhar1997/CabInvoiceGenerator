@@ -6,6 +6,7 @@ namespace CabInvoiceGenratorTest
     public class Tests
     {
         InvoiceGenerator invoiceGenerator=null;
+        RideRepository rideRepository;
 
         /// <summary>
         /// Test case for UC 1 Given the distance and time when invoice generator then should return total fare.
@@ -35,7 +36,7 @@ namespace CabInvoiceGenratorTest
         }
 
         /// <summary>
-        /// Givens the multiple rides when invoice generator then should return following invoice summary.
+        /// Test case for UC 3 Givens the multiple rides when invoice generator then should return following invoice summary.
         /// </summary>
         [Test]
         public void GivenMultipleRides_WhenInvoiceGenerator_thenShouldReturnFollowingInvoiceSummary()
@@ -44,6 +45,23 @@ namespace CabInvoiceGenratorTest
             Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
             InvoiceSummary invoiceSummary = invoiceGenerator.CalculateAvrageFare(rides);
             InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0 ,15);
+            Assert.AreEqual(expectedSummary, invoiceSummary);
+        }
+
+        /// <summary>
+        /// Test case for UC 4 Givens the multiple rides when user identifier then should return following invoice summary.
+        /// </summary>
+        [Test]
+        public void GivenMultipleRides_WhenUserId_thenShouldReturnFollowingInvoiceSummary()
+        {
+            invoiceGenerator = new InvoiceGenerator(RideType.NORMAL);
+            Ride[] rides = { new Ride(2.0, 5), new Ride(0.1, 1) };
+            RideRepository rideRepository = new RideRepository();
+            string userId = "Dhiraj";
+            rideRepository.AddRides(userId, rides);
+            Ride[] rideData = rideRepository.GetRides(userId);
+            InvoiceSummary invoiceSummary = invoiceGenerator.CalculateAvrageFare(rideData);
+            InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0, 15);
             Assert.AreEqual(expectedSummary, invoiceSummary);
         }
     }
