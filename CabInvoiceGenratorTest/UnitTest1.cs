@@ -59,10 +59,26 @@ namespace CabInvoiceGenratorTest
             RideRepository rideRepository = new RideRepository();
             string userId = "Dhiraj";
             rideRepository.AddRides(userId, rides);
+            rideRepository.AddRides("Suraj", new Ride[]{new Ride(3.0, 6), new Ride(4.0, 8)});
+            rideRepository.AddRides("vidyadhar", new Ride[] { new Ride(3.0, 6), new Ride(4.0, 8) });
             Ride[] rideData = rideRepository.GetRides(userId);
             InvoiceSummary invoiceSummary = invoiceGenerator.CalculateAvrageFare(rideData);
             InvoiceSummary expectedSummary = new InvoiceSummary(2, 30.0, 15);
             Assert.AreEqual(expectedSummary, invoiceSummary);
+        }
+
+        /// <summary>
+        /// Test case for UC 5 Given the distance and time when invoice generator then should return total fare for premium ride.
+        /// </summary>
+        [Test]
+        public void GivenDistanceAndTime_WhenInvoiceGenerator_ThenShouldReturnTotalFareForPremiumRide()
+        {
+            invoiceGenerator = new InvoiceGenerator(RideType.PREMIUM);
+            double distance = 2.0;
+            int time = 5;
+            double fare = invoiceGenerator.CalculateFare(distance, time);
+            double expected = 40;
+            Assert.AreEqual(expected, fare);
         }
     }
 }
