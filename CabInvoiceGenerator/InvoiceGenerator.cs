@@ -83,7 +83,7 @@ namespace CabInvoiceGenerator
         }
 
         /// <summary>
-        /// Calculates the Total fare for multiple rides.
+        /// Calculates the Total fare number of rides for multiple rides.
         /// </summary>
         /// <param name="rides">The rides.</param>
         /// <returns></returns>
@@ -106,6 +106,34 @@ namespace CabInvoiceGenerator
                 }
             }
             return new InvoiceSummary(rides.Length, totalFare);
+        }
+
+        /// <summary>
+        /// Calculates the avrage fare for number of rides,total fare,avrage fare for multiple rides.
+        /// </summary>
+        /// <param name="rides">The rides.</param>
+        /// <returns></returns>
+        /// <exception cref="CabInvoiceGenerator.CabInvoiceException">Rides are null</exception>
+        public InvoiceSummary CalculateAvrageFare(Ride[] rides)
+        {
+            double totalFare = 0;
+            double avrageFare = 0;
+            try
+            {
+                foreach (Ride ride in rides)
+                {
+                    totalFare += this.CalculateFare(ride.distance, ride.time);
+                }
+                avrageFare = (totalFare /rides.Length);
+            }
+            catch
+            {
+                if (rides == null)
+                {
+                    throw new CabInvoiceException(CabInvoiceException.ExceptionType.NULL_RIDE, "Rides are null");
+                }
+            }
+            return new InvoiceSummary(rides.Length, totalFare,avrageFare);
         }
     }
 }

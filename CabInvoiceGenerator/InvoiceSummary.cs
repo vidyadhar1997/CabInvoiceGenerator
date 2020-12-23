@@ -8,7 +8,7 @@ namespace CabInvoiceGenerator
     {
         private int numberOfRides;
         private double totalFare;
-        private double avrageFare;
+        public double avrageFare{ get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InvoiceSummary"/> class.
@@ -19,7 +19,13 @@ namespace CabInvoiceGenerator
         {
             this.numberOfRides = numberOfRides;
             this.totalFare = totalFare;
-            this.avrageFare = this.totalFare / this.numberOfRides;
+        }
+
+        public InvoiceSummary(int numberOfRides, double totalFare,double avrageFare)
+        {
+            this.numberOfRides = numberOfRides;
+            this.totalFare = totalFare;
+            this.avrageFare = avrageFare;
         }
 
         /// <summary>
